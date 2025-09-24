@@ -25,6 +25,9 @@ interface GraphQLResponse {
   };
 }
 
+// Force dynamic rendering to avoid build-time errors
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   // STEP 1: Security check - make sure we have the required environment variables
   if (!process.env.SHOPIFY_STORE_DOMAIN || !process.env.SHOPIFY_STOREFRONT_TOKEN) {
