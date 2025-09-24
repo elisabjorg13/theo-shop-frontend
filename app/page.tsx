@@ -1,103 +1,247 @@
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+// Type definitions for better type safety
+interface Product {
+  title: string;
+  handle: string;
+  priceRange: {
+    minVariantPrice: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
+  images: {
+    nodes: Array<{
+      url: string;
+    }>;
+  };
+}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+interface GraphQLResponse {
+  data?: {
+    products?: {
+      nodes: Product[];
+    };
+  };
+}
+
+export default async function Home() {
+  // STEP 1: Security check - make sure we have the required environment variables
+  if (!process.env.SHOPIFY_STORE_DOMAIN || !process.env.SHOPIFY_STOREFRONT_TOKEN) {
+    throw new Error('Missing required Shopify environment variables');
+  }
+
+  // STEP 2: Make the GraphQL request to Shopify
+  const res = await fetch(
+    // Build URL from environment variable (e.g., "https://my-store.myshopify.com/api/2024-07/graphql.json")
+    `https://${process.env.SHOPIFY_STORE_DOMAIN}/api/2024-07/graphql.json`,
+    {
+      // GraphQL always uses POST method (even for reading data)
+      method: "POST",
+      headers: {
+        // Tell server we're sending JSON data
+        "Content-Type": "application/json",
+        // Authenticate with Shopify using our secret token
+        "X-Shopify-Storefront-Access-Token": process.env.SHOPIFY_STOREFRONT_TOKEN,
+      },
+      // The GraphQL query - gets first 5 products with title, handle, price, and first image
+      body: JSON.stringify({
+        query: `{ products(first: 5) { nodes { title handle priceRange { minVariantPrice { amount currencyCode } } images(first:1){nodes{url}} } } }`,
+      }),
+      // Next.js caching - revalidate every 10 seconds for fresh data
+      next: { revalidate: 10 },
+      // Security timeout - kill request if it takes longer than 10 seconds
+      signal: AbortSignal.timeout(10000),
+    }
+  );
+
+  // STEP 3: Check if the request was successful
+  if (!res.ok) {
+    // Don't expose full error details to avoid leaking sensitive info
+    throw new Error(`Failed to fetch products: ${res.status}`);
+  }
+  
+  // STEP 4: Parse the JSON response into JavaScript objects
+  const data: GraphQLResponse = await res.json();
+  
+  // STEP 5: Extract products safely - use empty array if data is missing
+  // The ?. operator prevents crashes if any part of the nested structure is undefined
+  const products: Product[] = data?.data?.products?.nodes ?? [];
+
+  return (
+    <div className="min-h-screen bg-white relative">
+      {/* Grid Background using CSS custom properties */}
+      <div
+        className="absolute border-1 border-black"
+        style={{
+          top: '120px',
+          left: '5vw',
+          width: '90vw',
+          height: '75vh',
+          backgroundPosition: 'bottom left',
+          // draw lines from bottom-left, so grid "grows" from bottom-left
+          backgroundImage: `
+            repeating-linear-gradient(
+              180deg,
+              transparent 0 calc(40px - 1px),
+              rgba(0,0,0,1) calc(40px - 1px) 40px
+            ),
+            repeating-linear-gradient(
+              90deg,
+              transparent 0 calc(40px - 1px),
+              rgba(0,0,0,1) calc(40px - 1px) 40px
+            )
+          `,
+        }}
+      />
+      
+      {/* Corner Circles */}
+      <div
+        className="absolute"
+        style={{
+          top: '120px',
+          left: '5vw',
+          width: '90vw',
+          height: '75vh',
+          pointerEvents: 'none'
+        }}
+      >
+        {/* Top Left */}
+        <div
+          className="absolute w-3 h-3 bg-white border border-black rounded-full"
+          style={{ top: '-6px', left: '-6px' }}
+        />
+        {/* Top Right */}
+        <div
+          className="absolute w-3 h-3 bg-white border border-black rounded-full"
+          style={{ top: '-6px', right: '-6px' }}
+        />
+        {/* Bottom Left */}
+        <div
+          className="absolute w-3 h-3 bg-white border border-black rounded-full"
+          style={{ bottom: '-6px', left: '-6px' }}
+        />
+        {/* Bottom Right */}
+        <div
+          className="absolute w-3 h-3 bg-white border border-black rounded-full"
+          style={{ bottom: '-6px', right: '-6px' }}
+        />
+        
+        {/* Globe on Top Border */}
+        <div
+          className="absolute flex items-center justify-center"
+          style={{ top: '-23px', left: '50%', transform: 'translateX(-50%)' }}
+        >
+            <img
+              src="/globe.png"
+              alt="Globe"
+              className="w-12 h-12 bg-white rounded-full"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        
+        {/* THEO IKE Logo - Top Left */}
+        <div
+          className="absolute"
+          style={{ top: '-60px', left: '-30px' }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+          <img
+            src="/THEO IKE NORTH FINAL LABEL 5 X 2.1CM 1.png"
+            alt="THEO IKE"
+            className=""
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+      </div>
+      
+      {/* Shadow Ellipses - Under clothes */}
+      <div
+        className="absolute"
+        style={{
+          top: '115px',
+          left: '4vw',
+          width: '90vw',
+          height: '75vh',
+          zIndex: 8
+        }}
+      >
+        {/* Top Left Shadow */}
+        <Image
+          src="/Ellipse 12.png"
+          alt=""
+          width={800}
+          height={400}
+          className="absolute opacity-100"
+          style={{ 
+            top: '10px', 
+            left: '10px', 
+            width: '60vw', 
+            height: '50vh',
+            filter: 'brightness(0.85)'
+          }}
+        />
+        {/* Bottom Right Shadow */}
+        <Image
+          src="/Ellipse 12.png"
+          alt=""
+          width={800}
+          height={400}
+          className="absolute opacity-100"
+          style={{ 
+            bottom: '10px', 
+            right: '10px', 
+            width: '60vw', 
+            height: '50vh',
+            filter: 'brightness(0.85)'
+          }}
+        />
+      </div>
+
+      {/* Products Grid - Same size as background grid */}
+      <div
+        className="absolute"
+        style={{
+          top: '120px',
+          left: '5vw',
+          width: '90vw',
+          height: '75vh',
+          zIndex: 10
+        }}
+      >
+        <div className="h-full flex flex-col justify-start items-start mt-15">
+          {/* Desktop: 3 columns, Mobile: 1 column */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+            {products.map((p: Product) => (
+              <div key={p.handle} className="flex flex-col items-center p-2">
+                {/* Product Image with Hover Price Overlay - Clickable */}
+                <a
+                  href={`https://${process.env.NEXT_PUBLIC_SHOP_DOMAIN}/products/${p.handle}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative mb-3 group block"
+                >
+                  {p.images.nodes[0] ? (
+                    <img
+                      src={p.images.nodes[0].url}
+                      alt={p.title}
+                      className="w-32 h-32 md:w-50 md:h-50 object-cover"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 md:w-40 md:h-40 bg-gray-200 flex items-center justify-center text-gray-400 text-xs">
+                      No Image
+                    </div>
+                  )}
+                  
+                  {/* Price Overlay - Only visible on hover */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <span className="text-white text-shadow-[0_0_1px_#000,0_0_1px_#000,0_0_1px_#000,0_0_1px_#000] font-bold text-2xl bg-opacity-80 px-3 py-1">
+                      {p.priceRange.minVariantPrice.amount} {p.priceRange.minVariantPrice.currencyCode}
+                    </span>
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
