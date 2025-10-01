@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ManifestoModal from "./ManifestoModal";
 
 // Type definitions for better type safety
 interface Product {
@@ -231,6 +232,25 @@ export default async function Home() {
         />
       </div>
 
+      {/* Text Row Above Grid */}
+      <div
+        className="absolute"
+        style={{
+          top: '80px',
+          left: '5vw',
+          width: '90vw',
+          height: '40px',
+          zIndex: 15
+        }}
+      >
+        <div className="flex justify-between items-center h-full ml-25 mr-10">
+          <p className="text-black text-md md:text-lg hover:underline cursor-pointer">Archive</p>
+          <p className="invisible">Products</p>
+          <ManifestoModal />
+          <p className="text-black text-md md:text-lg hover:underline cursor-pointer">Shop</p>
+        </div>
+      </div>
+
       {/* Products Grid - Same size as background grid */}
       <div
         className="absolute"
@@ -242,7 +262,7 @@ export default async function Home() {
           zIndex: 10
         }}
       >
-        <div className="h-full flex flex-col justify-start items-start mt-5 md:mt-15 overflow-y-auto overflow-x-hidden scrollbar-hide">
+        <div className="h-full flex flex-col justify-start items-start mt-5 md:mt-10 overflow-y-auto overflow-x-hidden scrollbar-hide">
           {/* Desktop: 3 columns, Mobile: 1 column */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full p-4">
             {products.map((p: Product) => (
@@ -258,7 +278,7 @@ export default async function Home() {
                     <img
                       src={p.images.nodes[0].url}
                       alt={p.title}
-                      className="w-40 h-40 md:w-50 md:h-50 object-cover"
+                      className="w-40 h-40 md:w-60 md:h-60 object-cover"
                     />
                   ) : (
                     <div className="w-32 h-32 md:w-40 md:h-40 bg-gray-200 flex items-center justify-center text-gray-400 text-xs">
@@ -278,6 +298,7 @@ export default async function Home() {
           </div>
         </div>
       </div>
+
     </div>
   );
 }
