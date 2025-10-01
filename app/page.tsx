@@ -111,22 +111,22 @@ export default async function Home() {
       >
         {/* Top Left */}
         <div
-          className="absolute w-3 h-3 bg-white border border-black rounded-full"
+          className="absolute w-5 h-5 bg-white border border-black rounded-full"
           style={{ top: '-6px', left: '-6px' }}
         />
         {/* Top Right */}
         <div
-          className="absolute w-3 h-3 bg-white border border-black rounded-full"
+          className="absolute w-5 h-5 bg-white border border-black rounded-full"
           style={{ top: '-6px', right: '-6px' }}
         />
         {/* Bottom Left */}
         <div
-          className="absolute w-3 h-3 bg-white border border-black rounded-full"
+          className="absolute w-5 h-5 bg-white border border-black rounded-full"
           style={{ bottom: '-6px', left: '-6px' }}
         />
         {/* Bottom Right */}
         <div
-          className="absolute w-3 h-3 bg-white border border-black rounded-full"
+          className="absolute w-5 h-5 bg-white border border-black rounded-full"
           style={{ bottom: '-6px', right: '-6px' }}
         />
         
@@ -144,14 +144,47 @@ export default async function Home() {
         
         {/* THEO IKE Logo - Top Left */}
         <div
-          className="absolute"
-          style={{ top: '-60px', left: '-30px' }}
+          className="absolute -left-2 md:-left-4"
+          style={{ top: '-60px' }}
         >
           <img
             src="/THEO IKE NORTH FINAL LABEL 5 X 2.1CM 1.png"
             alt="THEO IKE"
-            className=""
+            className="w-20 md:w-24 h-auto"
           />
+        </div>
+        
+        {/* Compass Directions - N, W, E, S */}
+        {/* North */}
+        <div
+          className="absolute text-gray-100 font-bold text-3xl md:text-5xl"
+          style={{ top: '20px', left: '50%', transform: 'translateX(-50%)' }}
+        >
+          N
+        </div>
+        
+        {/* West */}
+        <div
+          className="absolute text-gray-100 font-bold text-3xl md:text-5xl"
+          style={{ top: '50%', left: '20px', transform: 'translateY(-50%)' }}
+        >
+          W
+        </div>
+        
+        {/* East */}
+        <div
+          className="absolute text-gray-100 font-bold text-3xl md:text-5xl"
+          style={{ top: '50%', right: '20px', transform: 'translateY(-50%)' }}
+        >
+          E
+        </div>
+        
+        {/* South */}
+        <div
+          className="absolute text-gray-100 font-bold text-3xl md:text-5xl"
+          style={{ bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}
+        >
+          S
         </div>
       </div>
       
@@ -205,13 +238,13 @@ export default async function Home() {
           top: '120px',
           left: '5vw',
           width: '90vw',
-          height: '75vh',
+          height: '72.2vh',
           zIndex: 10
         }}
       >
-        <div className="h-full flex flex-col justify-start items-start mt-15">
+        <div className="h-full flex flex-col justify-start items-start mt-5 md:mt-15 overflow-y-auto overflow-x-hidden scrollbar-hide">
           {/* Desktop: 3 columns, Mobile: 1 column */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full p-4">
             {products.map((p: Product) => (
               <div key={p.handle} className="flex flex-col items-center p-2">
                 {/* Product Image with Hover Price Overlay - Clickable */}
@@ -225,7 +258,7 @@ export default async function Home() {
                     <img
                       src={p.images.nodes[0].url}
                       alt={p.title}
-                      className="w-32 h-32 md:w-50 md:h-50 object-cover"
+                      className="w-40 h-40 md:w-50 md:h-50 object-cover"
                     />
                   ) : (
                     <div className="w-32 h-32 md:w-40 md:h-40 bg-gray-200 flex items-center justify-center text-gray-400 text-xs">
