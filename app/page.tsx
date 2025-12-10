@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import ManifestoModal from "./ManifestoModal";
 
 // Type definitions for better type safety
@@ -24,6 +25,21 @@ interface GraphQLResponse {
       nodes: Product[];
     };
   };
+}
+
+// Helper to format prices like "18.000 ISK" instead of "18000.0 ISK"
+function formatPrice(amount: string, currencyCode: string): string {
+  const value = parseFloat(amount);
+  if (isNaN(value)) return `${amount} ${currencyCode}`;
+
+  const hasCents = !Number.isInteger(value);
+
+  const formattedNumber = new Intl.NumberFormat("de-DE", {
+    minimumFractionDigits: hasCents ? 2 : 0,
+    maximumFractionDigits: hasCents ? 2 : 0,
+  }).format(value);
+
+  return `${formattedNumber} ${currencyCode}`;
 }
 
 // Force dynamic rendering to avoid build-time errors
@@ -74,32 +90,6 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-white relative">
-      {/* Grid Background using CSS custom properties */}
-      <div
-        className="absolute border-1 border-black"
-        style={{
-          top: '120px',
-          left: '5vw',
-          width: '90vw',
-          height: '75vh',
-          backgroundPosition: 'bottom left',
-          // draw lines from bottom-left, so grid "grows" from bottom-left
-          backgroundImage: `
-            repeating-linear-gradient(
-              180deg,
-              transparent 0 calc(40px - 1px),
-              rgba(0,0,0,1) calc(40px - 1px) 40px
-            ),
-            repeating-linear-gradient(
-              90deg,
-              transparent 0 calc(40px - 1px),
-              rgba(0,0,0,1) calc(40px - 1px) 40px
-            )
-          `,
-        }}
-      />
-      
-      {/* Corner Circles */}
       <div
         className="absolute"
         style={{
@@ -107,85 +97,48 @@ export default async function Home() {
           left: '5vw',
           width: '90vw',
           height: '75vh',
-          pointerEvents: 'none'
+          borderLeft: '1px solid #E3E3E3',
+          borderRight: '1px solid #E3E3E3',
+          borderTop: '1px solid #E3E3E3',
+          borderBottom: '1px solid #E3E3E3',
+          backgroundPosition: 'bottom left',
+          // draw lines from bottom-left, so grid "grows" from bottom-left
+          backgroundImage: `
+            repeating-linear-gradient(
+              180deg,
+              transparent 0 calc(80px - 1px),
+              #E3E3E3 calc(80px - 1px) 80px
+            ),
+            repeating-linear-gradient(
+              90deg,
+              transparent 0 calc(80px - 1px),
+              #E3E3E3 calc(80px - 1px) 80px
+            )
+          `,
+        }}
+      />
+      
+      <div
+        className="absolute"
+        style={{
+          top: '120px',
+          left: '5vw',
+          width: '90vw',
+          height: '75vh',
+          pointerEvents: 'none',
+          zIndex: 20,
         }}
       >
-        {/* Top Left */}
-        <div
-          className="absolute w-5 h-5 bg-white border border-black rounded-full"
-          style={{ top: '-6px', left: '-6px' }}
-        />
-        {/* Top Right */}
-        <div
-          className="absolute w-5 h-5 bg-white border border-black rounded-full"
-          style={{ top: '-6px', right: '-6px' }}
-        />
-        {/* Bottom Left */}
-        <div
-          className="absolute w-5 h-5 bg-white border border-black rounded-full"
-          style={{ bottom: '-6px', left: '-6px' }}
-        />
-        {/* Bottom Right */}
-        <div
-          className="absolute w-5 h-5 bg-white border border-black rounded-full"
-          style={{ bottom: '-6px', right: '-6px' }}
-        />
-        
-        {/* Globe on Top Border */}
-        <div
-          className="absolute flex items-center justify-center"
-          style={{ top: '-23px', left: '50%', transform: 'translateX(-50%)' }}
-        >
-            <img
-              src="/globe.png"
-              alt="Globe"
-              className="w-12 h-12 bg-white rounded-full"
-            />
-        </div>
-        
         {/* THEO IKE Logo - Top Left */}
         <div
           className="absolute -left-2 md:-left-4"
-          style={{ top: '-60px' }}
+          style={{ top: '-80px' }}
         >
           <img
             src="/THEO IKE NORTH FINAL LABEL 5 X 2.1CM 1.png"
             alt="THEO IKE"
             className="w-20 md:w-24 h-auto"
           />
-        </div>
-        
-        {/* Compass Directions - N, W, E, S */}
-        {/* North */}
-        <div
-          className="absolute text-gray-100 font-bold text-3xl md:text-5xl"
-          style={{ top: '20px', left: '50%', transform: 'translateX(-50%)' }}
-        >
-          N
-        </div>
-        
-        {/* West */}
-        <div
-          className="absolute text-gray-100 font-bold text-3xl md:text-5xl"
-          style={{ top: '50%', left: '20px', transform: 'translateY(-50%)' }}
-        >
-          W
-        </div>
-        
-        {/* East */}
-        <div
-          className="absolute text-gray-100 font-bold text-3xl md:text-5xl"
-          style={{ top: '50%', right: '20px', transform: 'translateY(-50%)' }}
-        >
-          E
-        </div>
-        
-        {/* South */}
-        <div
-          className="absolute text-gray-100 font-bold text-3xl md:text-5xl"
-          style={{ bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}
-        >
-          S
         </div>
       </div>
       
@@ -232,30 +185,46 @@ export default async function Home() {
         />
       </div>
 
-      {/* Text Row Above Grid */}
       <div
         className="absolute"
         style={{
-          top: '80px',
-          left: '5vw',
-          width: '90vw',
+          top: '15px',
+          left: 0,
+          width: '100vw',
           height: '40px',
-          zIndex: 15
+          zIndex: 15,
+          borderBottom: '1px solid black',
         }}
-      >
-        <div className="flex justify-between items-center h-full ml-25 mr-10">
-          <p className="text-black text-md md:text-lg hover:underline cursor-pointer">Archive</p>
-          <p className="invisible">Products</p>
+        >
+        <div className="flex justify-end items-center h-full gap-6 pr-10 font-amaranth font-bold">
+          <Link
+            href="/archive"
+            className="text-black text-md md:text-lg hover:underline cursor-pointer"
+          >
+            ARCHIVE
+          </Link>
           <ManifestoModal />
-          <p className="text-black text-md md:text-lg hover:underline cursor-pointer">Shop</p>
+          <p className="text-black text-md md:text-lg hover:underline cursor-pointer">SHOP</p>
         </div>
       </div>
+
+      {/* Bottom Horizontal Border Below Grid */}
+      <div
+        className="absolute"
+        style={{
+          top: 'calc(135px + 75vh + 40px)',
+          left: 0,
+          width: '100vw',
+          borderTop: '1px solid black',
+          zIndex: 15,
+        }}
+      />
 
       {/* Products Grid - Same size as background grid */}
       <div
         className="absolute"
         style={{
-          top: '120px',
+          top: '100px',
           left: '5vw',
           width: '90vw',
           height: '72.2vh',
@@ -278,18 +247,21 @@ export default async function Home() {
                     <img
                       src={p.images.nodes[0].url}
                       alt={p.title}
-                      className="w-40 h-40 md:w-60 md:h-60 object-cover"
+                      className="w-64 h-64 md:w-80 md:h-80 object-cover"
                     />
                   ) : (
-                    <div className="w-32 h-32 md:w-40 md:h-40 bg-gray-200 flex items-center justify-center text-gray-400 text-xs">
+                    <div className="w-52 h-52 md:w-64 md:h-64 bg-gray-200 flex items-center justify-center text-gray-400 text-xs">
                       No Image
                     </div>
                   )}
                   
                   {/* Price Overlay - Only visible on hover */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <span className="text-white text-shadow-[0_0_1px_#000,0_0_1px_#000,0_0_1px_#000,0_0_1px_#000] font-bold text-2xl bg-opacity-80 px-3 py-1">
-                      {p.priceRange.minVariantPrice.amount} {p.priceRange.minVariantPrice.currencyCode}
+                    <span className="text-white text-shadow-[0_0_1px_#000,0_0_1px_#000,0_0_1px_#000,0_0_1px_#000] font-bold text-4xl md:text-5xl bg-opacity-80 px-4 py-2">
+                      {formatPrice(
+                        p.priceRange.minVariantPrice.amount,
+                        p.priceRange.minVariantPrice.currencyCode
+                      )}
                     </span>
                   </div>
                 </a>

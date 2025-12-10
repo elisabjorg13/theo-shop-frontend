@@ -12,7 +12,7 @@ export default function ManifestoModal() {
         className="text-black text-md md:text-lg hover:underline cursor-pointer"
         onClick={() => setShowManifesto(true)}
       >
-        Manifesto
+        MANIFESTO
       </p>
 
       {/* Manifesto Modal Overlay */}
