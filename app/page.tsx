@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import ManifestoModal from "./ManifestoModal";
 
 // Type definitions for better type safety
 interface Product {
@@ -97,34 +96,6 @@ export default async function Home() {
           left: '5vw',
           width: '90vw',
           height: '75vh',
-          borderLeft: '1px solid #E3E3E3',
-          borderRight: '1px solid #E3E3E3',
-          borderTop: '1px solid #E3E3E3',
-          borderBottom: '1px solid #E3E3E3',
-          backgroundPosition: 'bottom left',
-          // draw lines from bottom-left, so grid "grows" from bottom-left
-          backgroundImage: `
-            repeating-linear-gradient(
-              180deg,
-              transparent 0 calc(80px - 1px),
-              #E3E3E3 calc(80px - 1px) 80px
-            ),
-            repeating-linear-gradient(
-              90deg,
-              transparent 0 calc(80px - 1px),
-              #E3E3E3 calc(80px - 1px) 80px
-            )
-          `,
-        }}
-      />
-      
-      <div
-        className="absolute"
-        style={{
-          top: '120px',
-          left: '5vw',
-          width: '90vw',
-          height: '75vh',
           pointerEvents: 'none',
           zIndex: 20,
         }}
@@ -203,7 +174,12 @@ export default async function Home() {
           >
             ARCHIVE
           </Link>
-          <ManifestoModal />
+          <Link
+            href="/about"
+            className="text-black text-md md:text-lg hover:underline cursor-pointer"
+          >
+            ABOUT
+          </Link>
           <p className="text-black text-md md:text-lg hover:underline cursor-pointer">SHOP</p>
         </div>
       </div>
@@ -217,6 +193,31 @@ export default async function Home() {
           width: '100vw',
           borderTop: '1px solid black',
           zIndex: 15,
+        }}
+      />
+
+      {/* Light grid background spanning between top and bottom borders */}
+      <div
+        className="absolute"
+        style={{
+          top: '55px', // just under the top border
+          left: 0,
+          width: '100vw',
+          height: 'calc(135px + 75vh + 40px - 55px)', // down to top of bottom border
+          zIndex: 5,
+          backgroundPosition: 'bottom left',
+          backgroundImage: `
+            repeating-linear-gradient(
+              180deg,
+              transparent 0 calc(80px - 1px),
+              #F0F0F0 calc(80px - 1px) 80px
+            ),
+            repeating-linear-gradient(
+              90deg,
+              transparent 0 calc(80px - 1px),
+              #F0F0F0 calc(80px - 1px) 80px
+            )
+          `,
         }}
       />
 

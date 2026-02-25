@@ -70,6 +70,38 @@ type ContentRelationshipFieldWithData<
 }[Exclude<TCustomType[number], string>["id"]];
 
 /**
+ * Content for about image documents
+ */
+interface AboutImageDocumentData {
+  /**
+   * image field in *about image*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: about_image.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * about image document from Prismic
+ *
+ * - **API ID**: `about_image`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type AboutImageDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<AboutImageDocumentData>,
+    "about_image",
+    Lang
+  >;
+
+/**
  * Content for archive image documents
  */
 interface ArchiveImageDocumentData {
@@ -144,7 +176,10 @@ export type InfoTextDocument<Lang extends string = string> =
     Lang
   >;
 
-export type AllDocumentTypes = ArchiveImageDocument | InfoTextDocument;
+export type AllDocumentTypes =
+  | AboutImageDocument
+  | ArchiveImageDocument
+  | InfoTextDocument;
 
 declare module "@prismicio/client" {
   interface CreateClient {
@@ -167,6 +202,8 @@ declare module "@prismicio/client" {
 
   namespace Content {
     export type {
+      AboutImageDocument,
+      AboutImageDocumentData,
       ArchiveImageDocument,
       ArchiveImageDocumentData,
       InfoTextDocument,

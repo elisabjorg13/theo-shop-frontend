@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import ManifestoModal from "../ManifestoModal";
 import { createClient } from "../../prismicio";
 
 export const dynamic = "force-dynamic";
@@ -90,7 +89,12 @@ export default async function ArchivePage() {
       >
         <div className="flex justify-end items-center h-full gap-6 pr-10 font-amaranth font-bold">
           <span className="text-black text-md md:text-lg">ARCHIVE</span>
-          <ManifestoModal />
+          <Link
+            href="/about"
+            className="text-black text-md md:text-lg hover:underline cursor-pointer"
+          >
+            ABOUT
+          </Link>
           <Link
             href="/"
             className="text-black text-md md:text-lg hover:underline cursor-pointer"
@@ -112,6 +116,19 @@ export default async function ArchivePage() {
         }}
       />
 
+      {/* Solid white area below bottom border so nothing shows under the line */}
+      <div
+        className="absolute"
+        style={{
+          top: "calc(135px + 75vh + 40px + 1px)", // just below the border line
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          backgroundColor: "white",
+          zIndex: 14, // above images (10), below border/nav (15+)
+        }}
+      />
+
       {/* Archive images layout inside grid */}
       <div
         className="absolute"
@@ -124,31 +141,23 @@ export default async function ArchivePage() {
         }}
       >
         <div className="h-full w-full overflow-y-auto overflow-x-hidden scrollbar-hide px-2 md:px-30 ">
-          {/* pt-10 = inner top padding inside the scrollable area */}
+          {/* One big vertical column, images slightly overlapping */}
           {archiveImages.map((doc, index) => {
-            const isLeft = index % 2 === 0;
-            const isLast = index === archiveImages.length - 1;
-
-            // Stronger overlap and less vertical space between images
-            const marginBottom = isLast ? "0px" : "-10rem";
-
             const imageUrl = doc.data.archive_image.url;
             if (!imageUrl) return null;
+
+            const marginTop = index === 0 ? "0px" : "-4rem"; // small overlap with previous image
 
             return (
               <div
                 key={doc.id}
-                style={{ marginBottom }}
+                style={{ marginTop }}
               >
-                <div
-                  className={`flex ${
-                    isLeft ? "justify-start" : "justify-end"
-                  }`}
-                >
+                <div className="flex justify-center">
                   <img
                     src={imageUrl}
                     alt={doc.data.image_title ?? "Archive image"}
-                    className="w-80 md:w-[28rem] object-cover"
+                    className="w-full md:w-[60rem] max-w-[60rem] object-cover"
                   />
                 </div>
               </div>
