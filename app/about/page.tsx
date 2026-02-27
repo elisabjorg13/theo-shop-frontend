@@ -23,10 +23,7 @@ export default async function AboutPage() {
           zIndex: 20,
         }}
       >
-        <div
-          className="absolute -left-2 md:-left-4"
-          style={{ top: "-80px" }}
-        >
+        <div className="absolute -left-2 md:-left-4" style={{ top: "-80px" }}>
           <img
             src="/THEO IKE NORTH FINAL LABEL 5 X 2.1CM 1.png"
             alt="THEO IKE"
@@ -147,15 +144,15 @@ export default async function AboutPage() {
         className="absolute"
         style={{
           top: "90px",
-          left: "10vw",
-          width: "80vw",
+          left: "3vw",
+          width: "94vw",
           height: "75vh",
           zIndex: 10,
         }}
       >
         <div className="h-full w-full overflow-y-auto overflow-x-hidden scrollbar-hide">
-          <div className="h-full w-full flex justify-center items-start pt-10 pb-20">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl text-black text-sm md:text-base leading-relaxed">
+          <div className="h-full w-full flex justify-start items-start pt-10 pb-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full text-black text-sm md:text-base leading-relaxed">
               {/* Left column: image */}
               <div className="w-full">
                 <Image
@@ -168,14 +165,18 @@ export default async function AboutPage() {
                 />
               </div>
               {/* Right column: about text from Prismic */}
-              <div className="w-full">
-                <h1>ABOUT</h1>
-                <PrismicRichText field={info.data.info_text} />
-                <h1>CONTACT</h1>
-                <p>General inquiries: hello@theoike.com</p>
-                <p>Instagram: @theoike</p>
-                <p> © Theo Ike 2026</p>
-                <p>Website by WFH Studio</p>
+              <div className="w-full font-bold text-xl">
+                <div className="pb-10">
+                  <h1 className="text-xl font-bold pb-10">ABOUT</h1>
+                  <PrismicRichText field={info.data.info_text} />
+                </div>
+                <h1 className="pb-10">CONTACT</h1>
+                <div className="flex flex-col gap-10">
+                  <p>General inquiries: hello@theoike.com</p>
+                  <p>Instagram: @theoike</p>
+                  <p> © Theo Ike 2026</p>
+                  <p>Website by WFH Studio</p>
+                </div>
               </div>
             </div>
           </div>
@@ -184,4 +185,3 @@ export default async function AboutPage() {
     </div>
   );
 }
-
