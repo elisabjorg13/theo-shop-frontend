@@ -10,7 +10,7 @@ export default async function AboutPage() {
   const info = await client.getSingle("info_text");
 
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="h-screen bg-white relative overflow-hidden">
       {/* Logo overlay */}
       <div
         className="absolute"
@@ -23,11 +23,11 @@ export default async function AboutPage() {
           zIndex: 20,
         }}
       >
-        <div className="absolute -left-2 md:-left-4" style={{ top: "-80px" }}>
+        <div className="absolute -left-2 md:-left-4" style={{ top: "-110px" }}>
           <img
             src="/THEO IKE NORTH FINAL LABEL 5 X 2.1CM 1.png"
             alt="THEO IKE"
-            className="w-20 md:w-24 h-auto"
+            className="w-32 md:w-36 h-auto"
           />
         </div>
       </div>
@@ -64,7 +64,7 @@ export default async function AboutPage() {
           height={400}
           className="absolute opacity-100"
           style={{
-            bottom: "10px",
+            bottom: "-55px",
             right: "10px",
             width: "60vw",
             height: "50vh",
@@ -92,7 +92,7 @@ export default async function AboutPage() {
           >
             ARCHIVE
           </Link>
-          <span className="text-black text-md md:text-lg">ABOUT</span>
+          <span className="text-black text-md md:text-lg underline underline-offset-4">ABOUT</span>
           <Link
             href="/"
             className="text-black text-md md:text-lg hover:underline cursor-pointer"
@@ -111,6 +111,19 @@ export default async function AboutPage() {
           width: "100vw",
           borderTop: "1px solid black",
           zIndex: 15,
+        }}
+      />
+
+      {/* Solid white area below bottom border so content does not bleed past the line */}
+      <div
+        className="absolute"
+        style={{
+          top: "calc(135px + 75vh + 40px + 1px)",
+          left: 0,
+          width: "100vw",
+          bottom: 0,
+          backgroundColor: "white",
+          zIndex: 14,
         }}
       />
 
@@ -143,15 +156,15 @@ export default async function AboutPage() {
       <div
         className="absolute"
         style={{
-          top: "90px",
-          left: "3vw",
-          width: "94vw",
-          height: "75vh",
+          top: "55px",
+          left: "5vw",
+          width: "90vw",
+          height: "90.1vh",
           zIndex: 10,
         }}
       >
-        <div className="h-full w-full overflow-y-auto overflow-x-hidden scrollbar-hide">
-          <div className="h-full w-full flex justify-start items-start pt-10 pb-20">
+        <div className="h-full w-full overflow-y-auto overflow-x-hidden scrollbar-hide pb-24">
+          <div className="w-full flex justify-start items-start pt-10 pb-20">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full text-black text-sm md:text-base leading-relaxed">
               {/* Left column: image */}
               <div className="w-full">
@@ -174,8 +187,12 @@ export default async function AboutPage() {
                 <div className="flex flex-col gap-10">
                   <p>General inquiries: hello@theoike.com</p>
                   <p>Instagram: @theoike</p>
-                  <p> © Theo Ike 2026</p>
-                  <p>Website by WFH Studio</p>
+                  <p>
+                    <Link href="/terms-and-conditions" className="hover:underline">
+                      Terms and conditions
+                    </Link>{" "}
+                    ©2026 Theo Ike. All Rights Reserved. Powered by WFH Studio
+                  </p>
                 </div>
               </div>
             </div>

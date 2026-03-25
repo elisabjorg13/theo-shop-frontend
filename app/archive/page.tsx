@@ -7,9 +7,41 @@ export const dynamic = "force-dynamic";
 export default async function ArchivePage() {
   const client = createClient();
   const archiveImages = await client.getAllByType("archive_image");
+  const featuredOrder = [
+    "final-collection-1",
+    "final-collection-2",
+    "final-collection-3",
+    "final-collection-4",
+    "final-collection-5",
+    "final-collection-6",
+    "denmark-spread",
+    "denmark-spread-2",
+    "cutting-a3-spread",
+    "endurance-2022",
+    "navy-days-2022",
+    "bil-next-2022",
+    "cracker-jon-2022",
+    "resolution-records-tests",
+    "resolution-records-2-2022",
+    "resolution-records-2022",
+    "mapping-the-mind-2021",
+    "bristol-mtm-spread",
+    "portfolio-project-2022",
+  ];
+
+  // Keep the requested final-collection sequence first, then keep the rest in original API order.
+  const sortedArchiveImages = [...archiveImages].sort((a, b) => {
+    const aIndex = featuredOrder.indexOf(a.uid ?? "");
+    const bIndex = featuredOrder.indexOf(b.uid ?? "");
+
+    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+    return 0;
+  });
 
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="h-screen bg-white relative overflow-hidden">
       {/* Logo overlay */}
       <div
         className="absolute"
@@ -24,12 +56,12 @@ export default async function ArchivePage() {
       >
         <div
           className="absolute -left-2 md:-left-4"
-          style={{ top: "-80px" }}
+          style={{ top: "-110px" }}
         >
           <img
             src="/THEO IKE NORTH FINAL LABEL 5 X 2.1CM 1.png"
             alt="THEO IKE"
-            className="w-20 md:w-24 h-auto"
+            className="w-32 md:w-36 h-auto"
           />
         </div>
       </div>
@@ -66,7 +98,7 @@ export default async function ArchivePage() {
           height={400}
           className="absolute opacity-100"
           style={{
-            bottom: "10px",
+            bottom: "-55px",
             right: "10px",
             width: "60vw",
             height: "50vh",
@@ -88,7 +120,7 @@ export default async function ArchivePage() {
         }}
       >
         <div className="flex justify-end items-center h-full gap-6 pr-10 font-amaranth font-bold">
-          <span className="text-black text-md md:text-lg">ARCHIVE</span>
+          <span className="text-black text-md md:text-lg underline underline-offset-4">ARCHIVE</span>
           <Link
             href="/about"
             className="text-black text-md md:text-lg hover:underline cursor-pointer"
@@ -123,7 +155,7 @@ export default async function ArchivePage() {
           top: "calc(135px + 75vh + 40px + 1px)", // just below the border line
           left: 0,
           width: "100vw",
-          height: "100vh",
+          bottom: 0,
           backgroundColor: "white",
           zIndex: 14, // above images (10), below border/nav (15+)
         }}
@@ -140,9 +172,9 @@ export default async function ArchivePage() {
           zIndex: 10,
         }}
       >
-        <div className="h-full w-full overflow-y-auto overflow-x-hidden scrollbar-hide px-2 md:px-30 ">
+        <div className="h-full w-full overflow-y-auto overflow-x-hidden scrollbar-hide px-2 md:px-30 pb-24">
           {/* One big vertical column, images slightly overlapping */}
-          {archiveImages.map((doc, index) => {
+          {sortedArchiveImages.map((doc, index) => {
             const imageUrl = doc.data.archive_image.url;
             if (!imageUrl) return null;
 
@@ -163,6 +195,18 @@ export default async function ArchivePage() {
               </div>
             );
           })}
+
+          {/* Terms + copyright as part of scroll content */}
+          <div className="w-full pt-6 pb-8">
+            <div className="font-amaranth font-bold text-black text-sm md:text-base leading-snug">
+              <div className="flex flex-col md:flex-row md:items-center gap-2">
+                <Link href="/terms-and-conditions" className="hover:underline cursor-pointer">
+                  Terms and conditions
+                </Link>
+                <span>©2026 Theo Ike. All Rights Reserved. Powered by WFH Studio</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -88,7 +88,7 @@ export default async function Home() {
   const products: Product[] = data?.data?.products?.nodes ?? [];
 
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="h-screen bg-white relative overflow-hidden">
       <div
         className="absolute"
         style={{
@@ -103,12 +103,12 @@ export default async function Home() {
         {/* THEO IKE Logo - Top Left */}
         <div
           className="absolute -left-2 md:-left-4"
-          style={{ top: '-80px' }}
+          style={{ top: '-110px' }}
         >
           <img
             src="/THEO IKE NORTH FINAL LABEL 5 X 2.1CM 1.png"
             alt="THEO IKE"
-            className="w-20 md:w-24 h-auto"
+            className="w-32 md:w-36 h-auto"
           />
         </div>
       </div>
@@ -147,7 +147,7 @@ export default async function Home() {
           height={400}
           className="absolute opacity-100"
           style={{ 
-            bottom: '10px', 
+            bottom: '-55px', 
             right: '10px', 
             width: '60vw', 
             height: '50vh',
@@ -180,9 +180,22 @@ export default async function Home() {
           >
             ABOUT
           </Link>
-          <p className="text-black text-md md:text-lg hover:underline cursor-pointer">SHOP</p>
+          <p className="text-black text-md md:text-lg underline underline-offset-4 cursor-default">SHOP</p>
         </div>
       </div>
+
+      {/* White cover above top border to clip overflowing content */}
+      <div
+        className="absolute"
+        style={{
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '55px',
+          backgroundColor: 'white',
+          zIndex: 14,
+        }}
+      />
 
       {/* Bottom Horizontal Border Below Grid */}
       <div
@@ -193,6 +206,19 @@ export default async function Home() {
           width: '100vw',
           borderTop: '1px solid black',
           zIndex: 15,
+        }}
+      />
+
+      {/* White cover below bottom border to clip overflowing content */}
+      <div
+        className="absolute"
+        style={{
+          top: 'calc(135px + 75vh + 40px + 1px)',
+          left: 0,
+          width: '100vw',
+          bottom: 0,
+          backgroundColor: 'white',
+          zIndex: 14,
         }}
       />
 
@@ -225,14 +251,14 @@ export default async function Home() {
       <div
         className="absolute"
         style={{
-          top: '100px',
+          top: '55px',
           left: '5vw',
           width: '90vw',
-          height: '72.2vh',
+          height: '90.1vh',
           zIndex: 10
         }}
       >
-        <div className="h-full flex flex-col justify-start items-start mt-5 md:mt-10 overflow-y-auto overflow-x-hidden scrollbar-hide">
+        <div className="h-full flex flex-col justify-start items-start overflow-y-auto overflow-x-hidden scrollbar-hide pb-24">
           {/* Desktop: 3 columns, Mobile: 1 column */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full p-4">
             {products.map((p: Product) => (
@@ -268,6 +294,18 @@ export default async function Home() {
                 </a>
               </div>
             ))}
+          </div>
+
+          {/* Terms + copyright as part of scroll content */}
+          <div className="w-full pt-6 pb-8">
+            <div className="px-4 font-amaranth font-bold text-black text-sm md:text-base leading-snug">
+              <div className="flex flex-col md:flex-row md:items-center gap-2">
+                <Link href="/terms-and-conditions" className="hover:underline cursor-pointer">
+                  Terms and conditions
+                </Link>
+                <span>©2026 Theo Ike. All Rights Reserved. Powered by WFH Studio</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
