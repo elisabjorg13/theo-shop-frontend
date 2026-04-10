@@ -101,11 +101,11 @@ export default async function Home() {
         }}
       >
         {/* THEO IKE Logo - Top Left */}
-        <div className="absolute -left-2 md:-left-4 top-[-76px] md:top-[-88px]">
+        <div className="absolute -left-2 md:-left-4 top-[-70px] md:top-[-82px]">
           <img
             src="/THEO IKE NORTH LABEL copy.png"
             alt="THEO IKE"
-            className="w-20 md:w-30 lg:w-34 h-auto"
+            className="w-20 md:w-30 lg:w-28 h-auto"
           />
         </div>
       </div>
