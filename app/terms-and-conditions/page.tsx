@@ -37,28 +37,17 @@ export default function TermsAndConditionsPage() {
         </div>
       </div>
 
-      {/* Bottom horizontal border */}
+      {/* White cover below bottom border so nothing shows under the line */}
       <div
         className="absolute"
         style={{
           top: "calc(135px + 75vh + 40px)",
           left: 0,
           width: "100vw",
+          bottom: 0,
+          backgroundColor: "white",
           borderTop: "1px solid black",
           zIndex: 15,
-        }}
-      />
-
-      {/* White cover below bottom border so nothing shows under the line */}
-      <div
-        className="absolute"
-        style={{
-          top: "calc(135px + 75vh + 40px + 1px)",
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          backgroundColor: "white",
-          zIndex: 14,
         }}
       />
 
@@ -69,7 +58,7 @@ export default function TermsAndConditionsPage() {
           top: "55px",
           left: "5vw",
           width: "90vw",
-          height: "90.1vh",
+          height: "calc(135px + 75vh + 40px - 55px)",
           zIndex: 10,
         }}
       >

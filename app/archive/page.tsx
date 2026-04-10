@@ -54,14 +54,11 @@ export default async function ArchivePage() {
           zIndex: 20,
         }}
       >
-        <div
-          className="absolute -left-2 md:-left-4"
-          style={{ top: "-110px" }}
-        >
+        <div className="absolute -left-2 md:-left-4 top-[-76px] md:top-[-88px]">
           <img
-            src="/THEO IKE NORTH FINAL LABEL 5 X 2.1CM 1.png"
+            src="/THEO IKE NORTH LABEL copy.png"
             alt="THEO IKE"
-            className="w-32 md:w-36 h-auto"
+            className="w-20 md:w-30 lg:w-34 h-auto"
           />
         </div>
       </div>
@@ -136,28 +133,17 @@ export default async function ArchivePage() {
         </div>
       </div>
 
-      {/* Bottom horizontal border */}
-      <div
-        className="absolute"
-        style={{
-          top: "calc(135px + 75vh + 40px)", // vertical position of bottom border line
-          left: 0,
-          width: "100vw",
-          borderTop: "1px solid black",
-          zIndex: 15,
-        }}
-      />
-
       {/* Solid white area below bottom border so nothing shows under the line */}
       <div
         className="absolute"
         style={{
-          top: "calc(135px + 75vh + 40px + 1px)", // just below the border line
+          top: "calc(135px + 75vh + 40px)",
           left: 0,
           width: "100vw",
           bottom: 0,
           backgroundColor: "white",
-          zIndex: 14, // above images (10), below border/nav (15+)
+          borderTop: "1px solid black",
+          zIndex: 15,
         }}
       />
 
@@ -168,7 +154,7 @@ export default async function ArchivePage() {
           top: "55px", // top edge of the scrollable archive images region
           left: "5vw",
           width: "90vw",
-          height: "90.1vh",
+          height: "calc(135px + 75vh + 40px - 55px)",
           zIndex: 10,
         }}
       >
@@ -178,7 +164,7 @@ export default async function ArchivePage() {
             const imageUrl = doc.data.archive_image.url;
             if (!imageUrl) return null;
 
-            const marginTop = index === 0 ? "0px" : "-4rem"; // small overlap with previous image
+            const marginTop = "0px"; // no overlap, keep strict top-to-bottom order
 
             return (
               <div
@@ -189,7 +175,7 @@ export default async function ArchivePage() {
                   <img
                     src={imageUrl}
                     alt={doc.data.image_title ?? "Archive image"}
-                    className="w-full md:w-[60rem] max-w-[60rem] object-cover"
+                    className="w-full md:w-[54rem] max-w-[54rem] object-cover"
                   />
                 </div>
               </div>

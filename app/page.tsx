@@ -101,14 +101,11 @@ export default async function Home() {
         }}
       >
         {/* THEO IKE Logo - Top Left */}
-        <div
-          className="absolute -left-2 md:-left-4"
-          style={{ top: '-110px' }}
-        >
+        <div className="absolute -left-2 md:-left-4 top-[-76px] md:top-[-88px]">
           <img
-            src="/THEO IKE NORTH FINAL LABEL 5 X 2.1CM 1.png"
+            src="/THEO IKE NORTH LABEL copy.png"
             alt="THEO IKE"
-            className="w-32 md:w-36 h-auto"
+            className="w-20 md:w-30 lg:w-34 h-auto"
           />
         </div>
       </div>
@@ -197,28 +194,17 @@ export default async function Home() {
         }}
       />
 
-      {/* Bottom Horizontal Border Below Grid */}
+      {/* White cover below bottom border to clip overflowing content */}
       <div
         className="absolute"
         style={{
           top: 'calc(135px + 75vh + 40px)',
           left: 0,
           width: '100vw',
-          borderTop: '1px solid black',
-          zIndex: 15,
-        }}
-      />
-
-      {/* White cover below bottom border to clip overflowing content */}
-      <div
-        className="absolute"
-        style={{
-          top: 'calc(135px + 75vh + 40px + 1px)',
-          left: 0,
-          width: '100vw',
           bottom: 0,
           backgroundColor: 'white',
-          zIndex: 14,
+          borderTop: '1px solid black',
+          zIndex: 15,
         }}
       />
 
@@ -254,7 +240,7 @@ export default async function Home() {
           top: '55px',
           left: '5vw',
           width: '90vw',
-          height: '90.1vh',
+          height: 'calc(135px + 75vh + 40px - 55px)',
           zIndex: 10
         }}
       >
