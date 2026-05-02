@@ -65,7 +65,7 @@ export default function TermsAndConditionsPage() {
         <div className="h-full w-full overflow-y-auto overflow-x-hidden scrollbar-hide touch-scroll px-2 md:px-30">
           {/* File name includes a space; keep it exactly as in /public */}
           <img
-            src="/_T+C_ PAGE (1).png"
+            src="/terms-and-conditions-v2.png"
             alt="Terms and conditions"
             className="w-full h-auto object-contain"
           />
