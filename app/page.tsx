@@ -101,7 +101,7 @@ export default async function Home() {
         }}
       >
         {/* THEO IKE Logo - Top Left */}
-        <div className="absolute -left-2 md:-left-4 top-[-70px] md:top-[-82px]">
+        <div className="absolute -left-2 md:-left-4 top-[-78px] md:top-[-82px]">
           <img
             src="/THEO IKE NORTH LABEL copy.png"
             alt="THEO IKE"
@@ -244,7 +244,7 @@ export default async function Home() {
           zIndex: 10
         }}
       >
-        <div className="h-full flex flex-col justify-start items-start overflow-y-auto overflow-x-hidden scrollbar-hide pb-24">
+        <div className="h-full flex flex-col justify-start items-start overflow-y-auto overflow-x-hidden scrollbar-hide touch-scroll pb-24">
           {/* Desktop: 3 columns, Mobile: 1 column */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full p-4">
             {products.map((p: Product) => (
@@ -260,7 +260,7 @@ export default async function Home() {
                     <img
                       src={p.images.nodes[0].url}
                       alt={p.title}
-                      className="w-64 h-64 md:w-80 md:h-80 object-cover"
+                      className="w-full max-w-[22rem] h-auto md:w-80 md:h-80 object-cover"
                     />
                   ) : (
                     <div className="w-52 h-52 md:w-64 md:h-64 bg-gray-200 flex items-center justify-center text-gray-400 text-xs">
@@ -268,9 +268,19 @@ export default async function Home() {
                     </div>
                   )}
                   
-                  {/* Price Overlay - Only visible on hover */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  {/* Price overlay on desktop hover */}
+                  <div className="absolute inset-0 hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                     <span className="text-white text-shadow-[0_0_1px_#000,0_0_1px_#000,0_0_1px_#000,0_0_1px_#000] font-bold text-4xl md:text-5xl bg-opacity-80 px-4 py-2">
+                      {formatPrice(
+                        p.priceRange.minVariantPrice.amount,
+                        p.priceRange.minVariantPrice.currencyCode
+                      )}
+                    </span>
+                  </div>
+
+                  {/* Mobile: always show price because hover is unavailable */}
+                  <div className="absolute inset-0 flex md:hidden items-center justify-center">
+                    <span className="text-white text-shadow-[0_0_1px_#000,0_0_1px_#000,0_0_1px_#000,0_0_1px_#000] font-bold text-3xl px-4 py-2">
                       {formatPrice(
                         p.priceRange.minVariantPrice.amount,
                         p.priceRange.minVariantPrice.currencyCode

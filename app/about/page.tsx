@@ -23,7 +23,7 @@ export default async function AboutPage() {
           zIndex: 20,
         }}
       >
-        <div className="absolute -left-2 md:-left-4 top-[-70px] md:top-[-82px]">
+        <div className="absolute -left-2 md:-left-4 top-[-78px] md:top-[-82px]">
           <img
             src="/THEO IKE NORTH LABEL copy.png"
             alt="THEO IKE"

@@ -62,7 +62,7 @@ export default function TermsAndConditionsPage() {
           zIndex: 10,
         }}
       >
-        <div className="h-full w-full overflow-y-auto overflow-x-hidden scrollbar-hide px-2 md:px-30">
+        <div className="h-full w-full overflow-y-auto overflow-x-hidden scrollbar-hide touch-scroll px-2 md:px-30">
           {/* File name includes a space; keep it exactly as in /public */}
           <img
             src="/_T+C_ PAGE.png"

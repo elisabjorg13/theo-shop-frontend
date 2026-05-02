@@ -45,3 +45,8 @@ h1,
 .scrollbar-hide::-webkit-scrollbar {
   display: none;  /* Safari and Chrome */
 }
+
+/* Improves momentum scrolling reliability on iOS Safari */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+}
